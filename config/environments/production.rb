@@ -103,10 +103,20 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
+  # エラーが発生した場合に例外を発生させる（デバッグ用）
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
+
+  # Resend を使用する設定
   config.action_mailer.delivery_method = :resend
 
-config.action_mailer.default_url_options = {
-  host: "capture-your-day.onrender.com",
-  protocol: "https"
-}
+  # 本番環境のURL設定
+  config.action_mailer.default_url_options = {
+    host: "capture-your-day.onrender.com",
+    protocol: "https"
+  }
+  # Devise のメール送信元アドレス
+  config.action_mailer.default_options = {
+    from: "no-reply@capture-your-day.com"
+  }
 end

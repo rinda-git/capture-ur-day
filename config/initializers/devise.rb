@@ -30,7 +30,7 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
   # config.mailer_sender = "noreply@capture-your-day.com"
-  config.mailer_sender = ENV.fetch("MAIL_FROM", "no-reply@example.com")
+  config.mailer_sender = ENV.fetch("MAIL_FROM", "no-reply@capture-your-day.com")
   # パスワードの最小文字数
   config.password_length = 6..128  # 最小6文字、最大128文字
 
