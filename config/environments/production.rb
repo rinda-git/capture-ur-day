@@ -106,7 +106,7 @@ Rails.application.configure do
   # エラーが発生した場合に例外を発生させる（デバッグ用）
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
-  
+
   # Resend を使用する設定
   config.action_mailer.delivery_method = :resend
 
@@ -117,7 +117,6 @@ Rails.application.configure do
   }
   # Devise のメール送信元アドレス
   config.action_mailer.default_options = {
-    from: 'no-reply@capture-your-day.com'
+    from: "no-reply@capture-your-day.com"
   }
-
 end
