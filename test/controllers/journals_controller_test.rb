@@ -32,7 +32,19 @@ end
   # OpenAI APIをモック化（実際には呼ばない）
   mock_result = {
     "rewritten_text" => "This is a test.",
-    "notes" => []
+    "notes" => [
+      {
+        "original_text" => "I went school",
+        "corrected_text" => "I went to school",
+        "mistake_type" => "grammar",
+        "explanation" => "場所へ行く場合は go to + 場所を使います",
+        "learning_points" => {
+          "label" => "前置詞 to の抜け",
+          "pattern" => "go to + 場所",
+          "review_tag" => "preposition"
+        }
+      }
+    ]
   }
 
   # OpenAI::Clientのchatメソッドを差し替える
@@ -46,7 +58,7 @@ end
   mock_client.expect(:chat, mock_response, parameters: Hash)
 
  OpenAI::Client.stub(:new, mock_client) do
-    assert_difference("Journal.count") do
+    assert_difference([ "Journal.count", "Mistake.count" ]) do
       post journals_url, params: {
         journal: {
           body:        "Test body",
@@ -58,6 +70,14 @@ end
       }
     end
     assert_redirected_to journal_url(Journal.last)
+    assert_equal(
+      {
+        "label" => "前置詞 to の抜け",
+        "pattern" => "go to + 場所",
+        "review_tag" => "preposition"
+      },
+      Mistake.last.learning_points
+    )
   end
 end
 

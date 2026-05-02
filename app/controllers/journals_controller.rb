@@ -41,7 +41,7 @@ class JournalsController < ApplicationController
     prompt = <<~PROMPT
     You are a bilingual Japanese-English writing teacher and correction coach who helps learners write natural American English and understand grammar clearly in Japanese.
     Your job is to REWRITE the user's message into natural, emotionally authentic American English without changing the original meaning.
-    After each grammar correction, teach grammar formula / pattern and 2 natural American English examples and a tip.
+    After each grammar correction, teach grammar formula / pattern and a tip.
     If the mistake is related to tense, present perfect, prepositions, gerunds, infinitives, or word order:
 
     Always explain:
@@ -94,12 +94,11 @@ class JournalsController < ApplicationController
     - Understand Japanese nuance deeply before rewriting into natural American English.
     - If the text is in Japanese, follow the flow of the original Japanese writing and rewrite the intended meaning into natural American English.
 
-
     ====================
     CORRECTION RULES
     ====================
-    - Return 3 to 5 notes for short input.
-    - Return 5 to 10 notes for longer input when there are enough useful learning points.
+    - Return 5 to 7 notes for short input.
+    - Return 6 to 10 notes for longer input when there are enough useful learning points.
     Do not only return the most serious mistakes.
     Include useful learning points from grammar, word choice, spelling, sentence structure, and natural expression.
     Each note should cover one specific learning point.
@@ -109,6 +108,16 @@ class JournalsController < ApplicationController
     - corrected_text
     - mistake_type: grammar | spelling | word_choice | expression | translation
     - explanation (in Japanese)
+      First explain what is grammatically missing or unnatural in the original text.
+      Then explain the reusable English pattern used in the correction.
+      Avoid explanations that only describe sentence flow, tone, or readability.
+    - learning_points:
+      - label: short Japanese label for the learning point
+      - pattern: 
+        reusable English grammar pattern or phrase pattern
+        Do not return overly broad patterns such as "in + noun", "with + noun", or "to + verb" unless that broad pattern is the main learning point.
+        The pattern should be specific enough to make a new sentence.
+      - review_tag: short lowercase English tag for review, such as preposition, tense, article, word_order, collocation, infinitive, gerund, expression, translation
 
     Grammar explanations should be practical:
     Explain the reusable grammar rule behind each mistake or show common and frequently used collocation patterns not only the correction.
@@ -117,61 +126,18 @@ class JournalsController < ApplicationController
     ✗ Bad: 「文法的に誤りがあります」
 
     ====================
-    ENGLISH FEEDBACK RULES
+    learning_points RULES
     ====================
-    Analyze ONLY English usage. Do NOT comment on emotions or story content.
 
-    Focus on:
-    - Grammar tendencies
-    - Common mistake patterns
-    - Vocabulary usage
-    - Sentence structure
-    - naturalness of English
+      For learning_points.pattern:
+      - If mistake_type is grammar, return a reusable grammar pattern.
+        Example: "go to + place"
+      - If mistake_type is word_choice, return the natural word usage or collocation.
+        Example: "insecurity / insecurities about + noun"
+      - If mistake_type is expression, return the natural phrase pattern.
+        Example: "feel self-conscious about + noun"
+      - Do not choose a broad grammar pattern if the main issue is word choice.
 
-    Be specific to THIS text. Avoid generic comments.
-    ✓ Good: 「前置詞が抜けやすいです」「動名詞：'come to + 名詞 / 動名詞' の場合、'to' の後には動詞の原形ではなく、動名詞を使います。」
-    ✗ Bad: 「気持ちがよく伝わります」
-
-     Analyze the user's ENGLISH usage only.
-      Do NOT comment on emotions, story content, personality, or life situation.
-      Focus only on English writing.
-
-      Return:
-      - mistake_patterns = repeated English mistakes or weak areas
-      - native_phrases:
-        - provide 2 to 4 practical expressions native speakers naturally use to express the same feeling or situation in this journal.Do not return generic motivational phrases.
-        - Return at least 2 native_phrases, and give basic grammar rule.
-        - Each phrase must be useful in a different situation or nuance.
-        - Do not return duplicate or very similar phrases.
-        Do not return generic comfort phrases such as:
-        take it easy
-        no worries
-        stay positive
-        you got this
-
-      - If there is not enough evidence, return an empty array.
-      - Do not make the feedback overly short.
-      - Each explanation should be concrete and specific to this text.
-      - Avoid generic comments.
-
-      Examples of good mistake_patterns:
-      - 前置詞が抜けやすいです
-      - 時制が混ざりやすいです
-      - 冠詞 a / the を忘れやすいです
-      - 日本語直訳の語順になりやすいです
-
-      Examples of native_phrases:
-      provide practical native expressions related to the exact situation and meaning described in the journal.
-    #{' '}
-      1. The meaning in Japanese
-      2. When native speakers use it (context / situation)
-      3. Short nuance explanation
-      4. natural example sentence
-
-      Teach phrases in a practical learning style.
-
-      Do NOT analyze personality or emotional content.
-      Use only this text as evidence.
 
     ====================
     INPUT
@@ -191,28 +157,15 @@ class JournalsController < ApplicationController
             "original_text": "string (required)",
             "corrected_text": "string (required)",
             "mistake_type": "grammar, spelling, word_choice, expression or translation (required)",
-            "explanation": "text in Japanese (required)"
-          }
-        ],
-      "english_feedback": {
-        "mistake_patterns": [
-          {#{' '}
-          "point": "この文で見られた英語の傾向や弱点を分かりやすく。",
-          "evidence": "元の文の具体例",
-          "explanation": "このミスがなぜ起きているか、どう直すべきかを日本語で1〜2文。前置詞であればどうすべきか、時制ならどうすべきかなど具体的に"
-          }
-         ],
-        "native_phrases": [
-            {
-              "phrase": "native phrase and basic grammar rule",
-              "meaning": "日本語の意味",
-              "corrected_text": "添削後の文",
-              "example": "よく使う例文",
-              "example2": "よく使う例文"
+            "explanation": "text in Japanese (required)",
+            "learning_points": {
+              "label": "短い日本語ラベル。例: 前置詞 to の抜け",
+              "pattern": "再利用できる英語の型。例: find it hard to + 動詞 + in that kind of environmentという形",
+              "meaning": "この表現の意味やニュアンス。例: 〜に対して感謝している",
+              "review_tag": "復習用の短い英語タグ。例: preposition"
             }
-          ]
-        }
-       }
+          }
+        ]
       }
 
       If the input contains Japanese text, classify all rewriting choices as "translation" type.
@@ -265,7 +218,8 @@ class JournalsController < ApplicationController
             original_text: note["original_text"],
             corrected_text: note["corrected_text"],
             mistake_type: note["mistake_type"],
-            explanation: note["explanation"]
+            explanation: note["explanation"],
+            learning_points: note["learning_points"] || {}
           )
         end
 

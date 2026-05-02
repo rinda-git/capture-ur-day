@@ -32,9 +32,27 @@
                 <span class="font-semibold">
                   <%= mistake_type_label(mistake.mistake_type) %>
                 </span>
-                <p class="text-base bg-gray-100 px-3 py-2 text-gray-600 mb-1">  【添削前】: <%= mistake.original_text %></p>
-                <p class="text-base bg-sage-50 border-l-2 border-forest-200 px-3 py-2">【添削後】：<%= mistake.corrected_text %></p>
+                <p class="text-base bg-gray-100 px-3 py-2 text-gray-600 mb-1">  
+                【添削前】: <%= mistake.original_text %></p>
+                <p class="text-base bg-sage-50 border-l-2 border-forest-200 px-3 py-2">
+                【添削後】：<%= mistake.corrected_text %></p>
                 <p class="text-base">ポイント： <%= mistake.explanation %></p>
+                <% if mistake.learning_points.present? %>
+                  <div class="text-base bg-white border border-cream-300 rounded-xl px-3 py-2 mt-2">
+                    <% if mistake.learning_points["review_tag"].present? %>
+                      <p>【復習タグ】<%= mistake.learning_points["review_tag"] %>
+                    <% end %>
+                    <% if mistake.learning_points["label"].present? %>
+                      (<%= mistake.learning_points["label"] %>)
+                    <% end %></p>
+                      <% if mistake.learning_points["meaning"].present? %>
+                        <p>【意味・ニュアンス】<%= mistake.learning_points["meaning"] %></p>
+                      <% end %>
+                    <% if mistake.learning_points["pattern"].present? %>
+                      <p>【覚える型】<%= mistake.learning_points["pattern"] %></p>
+                    <% end %>
+                  </div>
+                <% end %>
               </li>
             <% end %>
           </ol>
@@ -80,9 +98,10 @@
             <% @journal_correction.native_phrases&.each do |phrase| %>
             <div class="bg-white rounded-2xl p-3 mb-2">
               <p>【意味】<%= phrase["meaning"] %></p>
-              <p>【ネイティブがよく使う表現】<%= phrase["phrase"] %></p>
-              <p>【今回の文】<%= phrase["corrected_text"] %></p>
-              <p>【例文】</p>
+              <p>【覚えたい表現】<%= phrase["phrase"] %></p>
+              <p>【使い方（文法）】<%= phrase["grammarpattern"] %>
+              <p>【今回の日記では】<%= phrase["corrected_text"] %></p>
+              <p>【ほかの場面では】</p>
               <p><%= phrase["example"] %></p>
               <p><%= phrase["example2"] %></p>
             </div>
