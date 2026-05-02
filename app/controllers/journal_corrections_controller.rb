@@ -11,13 +11,18 @@ class JournalCorrectionsController < ApplicationController
   end
 
   def show
-    @journal_correction = current_user
-                          .journal_corrections
-                          .includes(:mistakes, :journal)
-                          .find(params[:id])
+    @journal_correction = current_user.journal_corrections.includes(:mistakes, :journal).find(params[:id])
 
     current_journal_id = @journal_correction.journal_id
-    @previous_journal_correction = current_user.journal_corrections.where("journal_id < ?", current_journal_id).order(journal_id: :desc).first
-    @next_journal_correction = current_user.journal_corrections.where("journal_id > ?", current_journal_id).order(journal_id: :asc).first
+    @previous_journal_correction = current_user.journal_corrections
+                                  .joins(:journal)
+                                  .where("journals.posted_date < ? OR (journals.posted_date = ? AND journals.id < ?)",
+                                  @journal_correction.journal.posted_date, @journal_correction.journal.posted_date, @journal_correction.journal_id)
+                                  .order("journals.posted_date DESC, journals.id DESC").first
+    @next_journal_correction = current_user.journal_corrections
+                               .joins(:journal)
+                               .where("journals.posted_date > ? OR (journals.posted_date = ? AND journals.id > ?)",
+                               @journal_correction.journal.posted_date, @journal_correction.journal.posted_date, @journal_correction.journal_id)
+                               .order("journals.posted_date ASC, journal_corrections.journal_id ASC").first
   end
 end

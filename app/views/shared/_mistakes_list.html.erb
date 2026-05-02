@@ -65,7 +65,7 @@
     <% end %>
 
     <%# 外側のカード %>
-    <% if @journal_correction&.present? %>
+    <% if @journal_correction&.mistake_patterns.present? || @journal_correction&.native_phrases.present? %>
       <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-2">
         <h3 class="font-semibold text-base mb-2">英語表現のポイント</h3>   
 
@@ -73,7 +73,7 @@
         <!--<div class="border border-gray-100 bg-white rounded-2xl p-4 mb-2"> -->
           <div class="mb-2">
 
-         <% if @journal_correction&.mistake_patterns.present? %>
+          <% if @journal_correction&.mistake_patterns.present? %>
           
           <div class="mb-2">
           <p class="badge badge-error p-3 mb-2">間違いパターン</p>
@@ -87,7 +87,7 @@
             <% end %>
           </div>
           <% end %>
-          <!--</div> -->
+          </div>
           
           <% if @journal_correction&.native_phrases.present? %>
           <hr class="border-forest-300 mb-2">
@@ -108,8 +108,9 @@
             <% end %>
           </div>
           <% end %>
+      <!--</div> -->
       </div>
     <% end %>
-  </div>
+
  <!-- </div>
 </div> -->
