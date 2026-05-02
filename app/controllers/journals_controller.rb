@@ -3,7 +3,7 @@ class JournalsController < ApplicationController
   before_action :authenticate_user!
   def index
     # @journals =current_user.journals.order(created_at: :desc)
-    @journals =current_user.journals.includes(:journal_correction).order(created_at: :desc)
+    @journals =current_user.journals.includes(:journal_correction).order(posted_date: :desc, id: :desc)
   end
 
   def show
@@ -206,9 +206,7 @@ class JournalsController < ApplicationController
         correction = @journal.create_journal_correction!(
           user_id: current_user.id,
           original_text: body,
-          rewritten_text: result["rewritten_text"],
-          mistake_patterns: result.dig("english_feedback", "mistake_patterns"),
-          native_phrases: result.dig("english_feedback", "native_phrases")
+          rewritten_text: result["rewritten_text"]
         )
 
         (result["notes"] || []).each do |note|
@@ -241,16 +239,9 @@ class JournalsController < ApplicationController
         #       explanation: note["explanation"]
         #   )
         # end
-        # 追加
-        # @overall = @journal.mistakes.find_by(mistake_type: "overall")
-        # @mistakes = @journal.mistakes.where.not(mistake_type: "overall")
-        # @english_feedback = result["english_feedback"]
-
-
 
         redirect_to @journal, notice: "添削が完了しました！"
       else
-        # Rails.logger.debug "=== journal errors: #{@journal.errors.full_messages}"
         flash.now[:alert] = "ジャーナルの作成に失敗しました。"
         render :new, status: :unprocessable_entity
       end
