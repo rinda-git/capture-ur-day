@@ -13,8 +13,12 @@ class JournalsController < ApplicationController
     # @mistakes = @journal.mistakes.where.not(mistake_type: "overall")
     @journal_correction = @journal.journal_correction
     @mistakes = @journal_correction&.mistakes || []
-    @previous_journal = current_user.journals.where("id < ?", @journal.id).order(id: :desc).first
-    @next_journal = current_user.journals.where("id > ?", @journal.id).order(id: :asc).first
+    @previous_journal = current_user.journals
+                        .where("posted_date < ? OR (posted_date = ? AND id > ?)", @journal.posted_date, @journal.posted_date, @journal.id)
+                        .order(posted_date: :desc, id: :desc).first
+    @next_journal = current_user.journals
+                    .where("posted_date > ? OR (posted_date = ? AND id > ?)", @journal.posted_date, @journal.posted_date, @journal.id)
+                    .order(posted_date: :asc, id: :asc).first
   end
 
   def new
