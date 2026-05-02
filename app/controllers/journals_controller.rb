@@ -113,7 +113,7 @@ class JournalsController < ApplicationController
       Avoid explanations that only describe sentence flow, tone, or readability.
     - learning_points:
       - label: short Japanese label for the learning point
-      - pattern: 
+      - pattern:#{' '}
         reusable English grammar pattern or phrase pattern
         Do not return overly broad patterns such as "in + noun", "with + noun", or "to + verb" unless that broad pattern is the main learning point.
         The pattern should be specific enough to make a new sentence.
