@@ -23,8 +23,10 @@
 
     <% if @journal_correction.mistakes.present? %>
       <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-4">
-        <h2 class="font-semibold mb-3">今回の学び(<%= @journal_correction.mistakes.size %>件)</h2>
-
+        <div class="flex justify-between">
+          <h2 class="font-semibold mb-3">今回の学び(<%= @journal_correction.mistakes.size %>件)</h2>
+           <%= link_to "学び詳細を見る", @journal_correction, class: "btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white" %>
+        </div>
         <div class="border border-gray-300 bg-white rounded-2xl p-4 mb-2">
           <ol class="list-decimal list-inside">
             <% @journal_correction.mistakes.each do |mistake| %>
@@ -32,11 +34,15 @@
                 <span class="font-semibold">
                   <%= mistake_type_label(mistake.mistake_type) %>
                 </span>
-                <p class="text-base bg-gray-100 px-3 py-2 text-gray-600 mb-1">  
+                <p class="text-base bg-red-50 px-3 py-2 text-red-500 mb-1 rounded-xl">  
                 【添削前】: <%= mistake.original_text %></p>
-                <p class="text-base bg-sage-50 border-l-2 border-forest-200 px-3 py-2">
+                <p class="text-base bg-sage-50 border-l-2 text-forest-600 font-semibold border-forest-200 rounded-xl px-3 py-2">
                 【添削後】：<%= mistake.corrected_text %></p>
-                <p class="text-base">ポイント： <%= mistake.explanation %></p>
+
+                <p class="text-base mt-2">ポイント</p>
+                  <div class=" bg-cream-100 rounded-xl px-3 py-2">
+                    <p> <%= mistake.explanation %></p>
+                  </div>
                 <% if mistake.learning_points.present? %>
                   <div class="text-base bg-white border border-cream-300 rounded-xl px-3 py-2 mt-2">
                     <% if mistake.learning_points["review_tag"].present? %>
@@ -51,6 +57,28 @@
                     <% if mistake.learning_points["pattern"].present? %>
                       <p>【覚える型】<%= mistake.learning_points["pattern"] %></p>
                     <% end %>
+
+                    <!--<% if mistake.learning_points["related_phrases"].present? %>
+                      <div class="mt-2">
+                        <p class="font-semibold">似た表現</p>
+                        <% mistake.learning_points["related_phrases"].each do |phrase| %>
+                          <div class="mt-2 bg-sage-50 border-l-2 border-forest-200 px-3 py-2">
+                            <% if phrase["meaning"].present? %>
+                              <p>【意味】<%= phrase["meaning"] %></p>
+                            <% end %>
+
+                            <% if phrase["phrase"].present? %>
+                              <p>【表現】<%= phrase["phrase"] %></p>
+                            <% end %>
+
+                            <% if phrase["example"].present? %>
+                              <p>【例文】<%= phrase["example"] %></p>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %> -->
+
                   </div>
                 <% end %>
               </li>

@@ -2,8 +2,8 @@
 <div class="flex-grow px-2 sm:px-6 md:px-10">
    <div class="max-w-4xl mx-auto pt-2 pb-6 sm:pt-6 md:px-0">
   <!--<div class="max-w-3xl mx-auto md:px-0 pt-6 pb-12"> -->
-    <h1 class="font-bold font-title text-lg md:text-4xl sm:text-2xl text-center font-cream-500 mb-6">
-    My Journal
+    <h1 class="font-bold font-sans text-lg md:text-4xl sm:text-2xl text-center font-cream-500 mb-6">
+    ジャーナル一覧
     </h1>
 
       <!-- <div class="actions mb-4">
@@ -14,22 +14,22 @@
         <% @journals.each do |journal| %>
           <%#　1件ずつ枠で囲む  %>
           <div class="text-right">
-          <%= button_to "削除",
-              journal_path(journal),
-              method: :delete,
-              form: {data: {turbo_confirm:"このジャーナルを削除しますか？"}},
-              class: "text-sm text-center hover:opacity-70"
-          %>
+            <%= button_to "削除",
+                journal_path(journal),
+                method: :delete,
+                form: {data: {turbo_confirm:"このジャーナルを削除しますか？"}},
+                class: "text-sm text-center hover:opacity-70"
+            %>
           </div>
 
           <%= link_to journal_path(journal), class:"block border border-cream-300 bg-white rounded-lg px-2 py-1 sm:px-4 py-3" do %>
           
           <p class="font-bold text-cream-500 mb-3">
-          <%= journal.posted_date.strftime("%Y/%m/%d") %>
+            <%= journal.posted_date.strftime("%Y/%m/%d") %>
           </p>
 
           <p class="mb-3 line-clamp-2">
-              <%= journal.journal_correction&.rewritten_text || journal.body %>
+            <%= journal.journal_correction&.rewritten_text || journal.body %>
           </p>
           <% end %>
         <% end %>

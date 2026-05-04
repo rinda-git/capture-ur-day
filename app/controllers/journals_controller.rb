@@ -40,9 +40,9 @@ class JournalsController < ApplicationController
 
     raise "tone is nil!" if tone.blank?
 
-    # 2 AIへの指示(プロンプト)を作成する
+# 2 AIへの指示(プロンプト)を作成する
 
-    prompt = <<~PROMPT
+prompt = <<~PROMPT
     You are a bilingual Japanese-English writing teacher and correction coach who helps learners write natural American English and understand grammar clearly in Japanese.
     Your job is to REWRITE the user's message into natural, emotionally authentic American English without changing the original meaning.
     After each grammar correction, teach grammar formula / pattern and a tip.
@@ -90,6 +90,7 @@ class JournalsController < ApplicationController
     ====================
     Important:
     - Preserve the original meaning, emotional nuance, and timeline.
+    - corrected_text must be natural American English first.
     - Do NOT translate literally or preserve awkward wording
     - Do not over-specify what is only implied.
     - If the original text is vague, keep it naturally vague.
@@ -101,8 +102,9 @@ class JournalsController < ApplicationController
     ====================
     CORRECTION RULES
     ====================
-    - Return 5 to 7 notes for short input.
-    - Return 6 to 10 notes for longer input when there are enough useful learning points.
+    - Return 3 to 5 notes for short input.
+    - Return 5 to 7 notes for longer input when there are enough useful learning points.
+
     Do not only return the most serious mistakes.
     Include useful learning points from grammar, word choice, spelling, sentence structure, and natural expression.
     Each note should cover one specific learning point.
@@ -129,19 +131,62 @@ class JournalsController < ApplicationController
     ✓ Good: 「基本ルール：when it comes to + 名詞 / 動名詞」この表現の to は不定詞ではなく前置詞です。そのため後ろに動詞の原形 write は置けず、動名詞 writing を使います。
     ✗ Bad: 「文法的に誤りがあります」
 
+    Classification rules:
+    - mistake_type must be exactly one of: grammar, spelling, word_choice, expression, translation
+
     ====================
     learning_points RULES
     ====================
-
       For learning_points.pattern:
-      - If mistake_type is grammar, return a reusable grammar pattern.
-        Example: "go to + place"
-      - If mistake_type is word_choice, return the natural word usage or collocation.
-        Example: "insecurity / insecurities about + noun"
-      - If mistake_type is expression, return the natural phrase pattern.
-        Example: "feel self-conscious about + noun"
-      - Do not choose a broad grammar pattern if the main issue is word choice.
+      Learning point selection priority:
+      1. Choose the most useful reusable phrase, collocation, or grammar pattern from corrected_text.
+      2. Prefer expressions learners can reuse in daily journaling.
+      3. Do not choose a basic grammar rule if corrected_text contains a more useful natural expression.
+      4. The pattern must be based on corrected_text, but do not make corrected_text unnatural just to match the pattern.
+      5. The pattern should be the smallest reusable unit that preserves the main meaning.
 
+      Related phrases:
+      - Return related_phrases only for the 2 most useful learning_points.
+      - For other notes, return related_phrases: [].
+      - related_phrases must be semantic alternatives to learning_points.pattern, not examples of the same pattern.
+      - phrase must be a reusable phrase pattern, not a full sentence.
+      - example must be a complete sentence using that phrase.
+    #{'  '}
+
+      Classification rules:
+      - mistake_type must be exactly one of: grammar, spelling, word_choice, expression, translation.
+      - Use detailed categories such as tense, preposition, article, word_order, collocation, infinitive, gerund only in
+      learning_points.review_tag.
+
+        Only create a note when it teaches a useful reusable point for the learner.
+
+      ====================
+      LEARNING POINT SELECTION
+      ====================
+
+      Only create a note when it teaches a useful reusable point for the learner.
+
+      Priority:
+      1. Naturalness first: corrected_text must sound natural, emotionally authentic, and not overly formal.
+      2. Prefer useful collocations and natural expressions over basic grammar frames.
+      3. Choose patterns the learner can reuse for emotions, self-reflection, relationships, habits, worries, personal growth, and nuanced feelings.
+      4. Do not create a note for a change that is only a tiny style preference.
+      5. Do not replace a natural casual expression with a more formal one unless the selected tone requires it.
+      6. learning_points.pattern must be based on a natural phrase in corrected_text.
+      7. The pattern should be the smallest reusable unit that preserves the main meaning, but not overly generic or beginner-level.
+      8. The grammar placeholder in phrase and pattern must match the example sentence, such as + 名詞, + 動名詞, + to + 動詞, or + 主語 + 動詞.
+
+      Bad learning points:
+      - "I have many + 名詞"
+      - "I don't usually + 動詞 + with others"
+      - "often + feel + 動詞"
+      - "remove unnecessary words"
+
+      Good learning points:
+      - "insecurities about + 名詞"
+      - "share my feelings with + 人"
+      - "It often feels like + 主語 + 動詞"
+      - "have mixed feelings about + 名詞"
 
     ====================
     INPUT
@@ -163,10 +208,22 @@ class JournalsController < ApplicationController
             "mistake_type": "grammar, spelling, word_choice, expression or translation (required)",
             "explanation": "text in Japanese (required)",
             "learning_points": {
-              "label": "短い日本語ラベル。例: 前置詞 to の抜け",
+              "label": "短い日本語ラベル。例: 前置詞 to の抜け 動詞の形 語彙選択など",
               "pattern": "再利用できる英語の型。例: find it hard to + 動詞 + in that kind of environmentという形",
               "meaning": "この表現の意味やニュアンス。例: 〜に対して感謝している",
-              "review_tag": "復習用の短い英語タグ。例: preposition"
+              "review_tag": "復習用の短い英語タグ。例: preposition",
+              "related_phrases":[
+              {
+               "phrase": "似たようなネイティブが使う自然な表現",
+               "meaning": "その表現の意味やニュアンスを日本語で説明",
+               "example": "完全な英語例文。"
+              },
+              {
+               "phrase": "似たようなネイティブが使う自然な表現",
+               "meaning": "その表現の意味やニュアンスを日本語で説明",
+                "example": "完全な英語例文。"
+               }
+              ]
             }
           }
         ]
