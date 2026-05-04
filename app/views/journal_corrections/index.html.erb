@@ -13,24 +13,31 @@
           <%= link_to journal_correction_path(journal_correction),
             class:"block border border-cream-300 bg-white rounded-lg px-2 py-1 sm:px-4 py-3" do %>
           <%# 日付 %>
-          <div class="font-bold text-cream-500 flex items-center gap-2">
-          <%= journal_correction.journal.posted_date.strftime("%Y/%m/%d") %>の日記
-            <div class="badge badge-soft badge-success badge-md text-white">
-            <%= journal_correction.mistakes.count { |mistake| mistake.learning_points["pattern"].present? } %>つの学び
-            </div>
-        </div>
+            <div class="font-bold text-cream-500 flex items-center gap-2">
+              <%= journal_correction.journal.posted_date.strftime("%Y/%m/%d") %>の日記
+              <div class="badge badge-soft badge-success badge-md text-white">
+                <%= journal_correction.mistakes.count { |mistake| mistake.learning_points["pattern"].present? } %>つの学び
+              </div>
+           </div>
       
 
         <div class="mb-2">
           <% journal_correction.mistakes.first(2).each do |mistake| %>
-          <p><%= mistake.learning_points["pattern"] %>  </p>
-          <p class="text-gray-500">【意味】<%= mistake.learning_points["meaning"] %></p>
-            <% end %>
+            <p class="font-semibold"><%= mistake.learning_points["pattern"] %></p>
+            <p class="text-gray-500">【意味】<%= mistake.learning_points["meaning"] %></p>
+          
+            <!--<% if mistake.learning_points["related_phrases"].present? %>
+              <% mistake.learning_points["related_phrases"].each do |phrase| %> 
+                <p><%= phrase["phrase"] %></p>
+                <p class="text-gray-500">【意味】<%= phrase["meaning"] %></p>
+              <% end %>
+            <% end %>-->
+          <% end %>
         </div>
-
           <% end %>
         <% end %>
       </div>
+    
     <% else %>
       <div role="alert" class="alert alert-info alert-soft">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-6 w-6 shrink-0 stroke-current">

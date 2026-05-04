@@ -12,6 +12,7 @@ class JournalCorrectionsController < ApplicationController
 
   def show
     @journal_correction = current_user.journal_corrections.includes(:mistakes, :journal).find(params[:id])
+    @journal = @journal_correction.journal
 
     current_journal_id = @journal_correction.journal_id
     @previous_journal_correction = current_user.journal_corrections

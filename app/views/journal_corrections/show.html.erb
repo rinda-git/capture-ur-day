@@ -6,20 +6,24 @@
       <%= t('.title') %>
     </h1>
     
-    <div class="flex justify-between mb-1">
-      <% if @previous_journal_correction.present? %>
-        <%= link_to "前の日記", @previous_journal_correction, class:"btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white" %>
+    
+    <div class="flex justify-between gap-2 mb-1">
+      <div class="font-semibold mb-2"> 
+        <%= @journal_correction.journal.posted_date.strftime("%Y/%m/%d") %>
+      </div>
+      <div class="flex gap-2 mb-2"><% if @previous_journal_correction.present? %>
+        <%= link_to "← 前の学び", @previous_journal_correction, class:"btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white" %>
       <% end %>
 
       <% if @next_journal_correction.present? %>
-        <%= link_to "次の日記", @next_journal_correction, class:"btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white" %>
+        <%= link_to "次の学び →", @next_journal_correction, class:"btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white" %>
       <% end %>
-  
+      </div>
     </div>
-    <div class="font-semibold mb-2"> <%= @journal_correction.journal.posted_date.strftime("%Y/%m/%d") %></div>
-    <%= render "shared/mistakes_list", mistakes: @journal_correction.mistakes, show_original_text: false %>
-    <!--<div class="font-semibold mb-2"> <%= @journal_correction.journal.posted_date.strftime("%Y/%m/%d") %> </div>
-    <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-4">
+
+    <%# render "shared/mistakes_list", mistakes: @journal_correction.mistakes, show_original_text: false %>
+
+   <!-- <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-4">
       <div class="flex items-center gap-2">
         <h2 class="font-semibold mb-3">添削後の文章</h2>
         <span class="badge badge-soft badge-success text-white mb-3 p-3">
@@ -31,9 +35,9 @@
           <%= @journal_correction.rewritten_text %>
           </p>
         </div>
-    </div>
+    </div> -->
 
-    <% if @journal_correction.mistakes.present? %>
+    <!--<% if @journal_correction.mistakes.present? %>
       <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-4">
         <h2 class="font-semibold mb-3">今回の学び(<%= @journal_correction.mistakes.size %>件)</h2>
 
@@ -56,54 +60,62 @@
       <div class="alert alert-success mb-4">
         <span>🎉 間違いは見つかりませんでした！</span>
       </div>
-    <% end %>
-
-    <%# 外側のカード %>
-    <% if @journal_correction&.strengths.present? %>
-      <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-2">
-        <h3 class="font-semibold text-base mb-2">英文の傾向</h3> -->
-       
-
-        <%# 内側の白部分 %>
-          <!-- <div class="mb-2">
-          <p class="badge badge-success text-white p-3 mb-2">良い点</p>
-            
-            <% (@journal_correction.strengths || []).each do |strength| %>
-              <div class="bg-white rounded-2xl p-4 mb-2">
-                <p class="font-semibold"><%= strength["point"] %></p>
-                <p>【元の文章】<%= strength["evidence"] %></p>
-                <p>【良かった点】<%= strength["why_it_works"] %></p>
-              </div>
-            <% end %>
-            
-          </div>
-
-          <hr class="border-forest-300 mb-2">
-          
-          <div class="mb-2">
-          <p class="badge badge-error p-3 mb-2">間違いパターン</p>
-            
-            <% (@journal_correction.mistake_patterns || []).each do |pattern| %> 
-              <div class="bg-white rounded-2xl p-3 mb-2">
-                <p class="font-semibold"><%= pattern["point"] %></p>
-                <p>【元の文章】<%= pattern["evidence"] %></p>
-                <p>【説明】<%= pattern["explanation"] %></p>
-              </div>
-            <% end %>
-          </div>
-          
-          <hr class="border-forest-300 mb-2">
-
-          <div class="mb-2">
-            <p class="badge badge-warning p-3 mb-2">アドバイス</p>
-            <div class="bg-white rounded-2xl p-3 mb-2">
-              <%= @journal_correction["advice"] %>
-            </div>
-          </div>
-
-     
-      </div>
     <% end %> -->
 
+    <%# 外側のカード %>
+    <% if @journal_correction.journal.mistakes&.present? %>
+        <%# 内側の白部分 %>
+           <div class="mb-2">
+              <% @journal_correction.mistakes.each do |mistake| %>
+              <div class="border border-forest-500 bg-white rounded-2xl overflow-hidden mb-3">
+                
+                <%# 学んだ表現 %>
+                <div class="bg-forest-50 p-3 mb-1">
+                  <p class="text-lg font-semibold text-forest-700">
+                    <%= mistake.learning_points["pattern"] %>
+                  </p>
+                  <p class="text-forest-600">
+                    <%= mistake.learning_points["meaning"] %>
+                  </p>
+                </div>
+
+                <%# 添削前・添削後の文章 %>
+                <div class="mx-3 text-gray-500 mb-2">今回の添削</div>
+                  <div class="mx-3 bg-red-50 rounded-xl px-2 py-2 mb-2">
+                    <p class=" text-red-500">添削前：<%= mistake.original_text %></p>
+                </div>
+                <div class="mx-3 bg-forest-50 rounded-xl px-2 py-2">
+                  <p class=" text-forest-600 font-semibold">添削後：<%= mistake.corrected_text %></p> 
+                </div>
+                <hr class="border-forest-500 mb-2 mt-2">
+
+              <%# ほかの表現・言い回し %>
+              <p class="mx-3 text-gray-500 mb-2">似た表現・言い回し</p>
+
+              <% mistake.learning_points["related_phrases"].each do |phrase| %>
+                <div class="mx-3 bg-white border border-gray-300 rounded-2xl p-3 mb-2">
+                  <p class="text-lg font-semibold"><%= phrase["phrase"] %><p>
+                  <p><%= phrase["meaning"] %></p>
+                  <p class=" text-forest-500 font-semibold"><%= phrase["example"] %></p>
+                </div> 
+              <% end %>
+                <%= link_to "この日記を見る", 
+                    @journal_correction.journal,
+                    class:"mx-3 flex items-center justify-center btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white mb-2" %>                     
+                </div>
+            <% end %>  
+          </div>
+  
+    
+    <% end %> 
+    <div class="flex justify-end gap-2 mb-1">
+      <% if @previous_journal_correction.present? %>
+        <%= link_to "← 前の学び", @previous_journal_correction, class:"btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white" %>
+      <% end %>
+
+      <% if @next_journal_correction.present? %>
+        <%= link_to "次の学び →", @next_journal_correction, class:"btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white" %>
+      <% end %>
+  
+    </div>
   </div>
-</div>
