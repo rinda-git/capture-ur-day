@@ -92,7 +92,7 @@
               <%# ほかの表現・言い回し %>
               <p class="mx-3 text-gray-500 mb-2">似た表現・言い回し</p>
 
-              <% mistake.learning_points["related_phrases"].each do |phrase| %>
+              <% Array(mistake.learning_points["related_phrases"]).compact.each do |phrase| %>
                 <div class="mx-3 bg-white border border-gray-300 rounded-2xl p-3 mb-2">
                   <p class="text-lg font-semibold"><%= phrase["phrase"] %><p>
                   <p><%= phrase["meaning"] %></p>
