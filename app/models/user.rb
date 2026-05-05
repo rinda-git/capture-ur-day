@@ -11,4 +11,42 @@ class User < ApplicationRecord
          :recoverable,
          :rememberable,
          :validatable
+
+  def total_journal_count
+    journals.distinct.count
+  end
+
+  def this_month_journal_count
+    journals.where(posted_date: Date.current.all_month).distinct.count
+  end
+
+  def total_learning_count
+    mistakes.joins(:journal)
+            .where("learning_points ->> 'pattern' IS NOT NULL")
+            .where.not("learning_points ->> 'pattern' = ''")
+            .distinct
+            .count
+  end
+
+  def this_month_learning_count
+    mistakes.joins(:journal)
+            .where(journals: { posted_date: Date.current.all_month })
+            .where("learning_points ->> 'pattern' IS NOT NULL")
+            .where.not("learning_points ->> 'pattern' = ''")
+            .distinct
+            .count
+  end
+
+  def streak_dates
+    posted_dates = journals.distinct.pluck(:posted_date)
+
+    count = 0
+    date = posted_dates.include?(Date.current) ? Date.current : Date.yesterday
+
+    while posted_dates.include?(date)
+      count += 1
+      date -= 1.day
+    end
+    count
+  end
 end
