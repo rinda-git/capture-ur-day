@@ -71,7 +71,7 @@
                 
                 <%# 学んだ表現 %>
                 <div class="bg-forest-50 p-3 mb-1">
-                  <p class="text-lg font-semibold text-forest-700">
+                  <p class="text-lg font-bold text-forest-700">
                     <%= mistake.learning_points["pattern"] %>
                   </p>
                   <p class="text-forest-600">
@@ -94,7 +94,7 @@
 
               <% Array(mistake.learning_points["related_phrases"]).compact.each do |phrase| %>
                 <div class="mx-3 bg-white border border-gray-300 rounded-2xl p-3 mb-2">
-                  <p class="text-lg font-semibold"><%= phrase["phrase"] %><p>
+                  <p class="text-lg font-bold"><%= phrase["phrase"] %></p>
                   <p><%= phrase["meaning"] %></p>
                   <p class=" text-forest-500 font-semibold"><%= phrase["example"] %></p>
                 </div> 

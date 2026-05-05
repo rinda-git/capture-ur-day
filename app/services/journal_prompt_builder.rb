@@ -133,6 +133,7 @@ class JournalPromptBuilder
       6. learning_points.pattern must be based on a natural phrase in corrected_text.
       7. The pattern should be the smallest reusable unit that preserves the main meaning, but not overly generic or beginner-level.
       8. The grammar placeholder in phrase and pattern must match the example sentence, such as + 名詞, + 動名詞, + to + 動詞, or + 主語 + 動詞.
+      9. Prefer patterns that capture the core meaning or emotional intent of the sentence, not just its structure.
 
       DO NOT SELECT patterns like:
         - be + adjective
