@@ -18,7 +18,7 @@
   </div>
   <%# 元の文章（日本語でもそのまま表示） %>
   <%# スマホ：折りたたみ表示 %>
-    <div class="font-semibold mb-2"><%= @journal.posted_date.strftime("%Y/%m/%d") %></div>
+    <div class="font-semibold mb-2 text-base md:text-lg"><%= @journal.posted_date.strftime("%Y/%m/%d") %></div>
     <div class="md:hidden collapse collapse-arrow border border-cream-300 bg-forest-100 rounded-2xl mb-4">
       <input type="checkbox" />
       <h2 class="collapse-title font-semibold pr-10">元の文章を表示</h2>
@@ -32,9 +32,9 @@
     </div>
   <%# md以上：通常表示 %>
       <div class="hidden md:block border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-4">
-      <h2 class="font-semibold mb-2">元の文章 </h2>
+      <h2 class="font-semibold mb-2 text-base md:text-lg">元の文章 </h2>
         <div class="border border-cream-300 bg-white rounded-2xl p-4 mb-2">
-        <p>
+        <p class="text-base md:text-lg">
           <%= @journal_correction&.original_text %>
         </p>
         </div>
@@ -124,7 +124,7 @@
      
 
     <div class="flex mt-5 gap-5">
-    <%= link_to 'ジャーナル一覧に戻る' , journals_path, class:"btn btn-primary flex-1" %>
+    <%= link_to 'ジャーナル一覧に戻る' , journals_path, class:"btn btn-primary flex-1 text-base md:text-lg" %>
     <%= button_to "このジャーナルを削除",
         journal_path(@journal), method: :delete, form: { data: { turbo_confirm: "このジャーナルを削除しますか?"}}, class: "btn btn-error" %>
     </div>

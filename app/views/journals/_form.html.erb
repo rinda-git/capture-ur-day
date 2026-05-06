@@ -1,7 +1,7 @@
 <%= form_with model: journal do |f| %>
   <%# render 'shared/error_messages', object: f.object %>
   <div class="mb-3">
-    <p class="text-sans text-base font-medium mb-2">今日の気分</p>
+    <p class="text-sans text-base md:text-lg font-medium mb-2">今日の気分</p>
     <div class="border border-gray-300 bg-white rounded-2xl py-3 px-3">
     <div class="flex gap-2">
     <% Journal.moods.each do |key, value| %>
@@ -23,7 +23,7 @@
   </div>
   
   <%# 日付 %>
-  <div class="mb-3">
+  <div class="mb-3 md:text-lg">
     <%= f.label :posted_date, class: "label label-text text-base font-medium" %>
 
     <button type="button"
@@ -66,32 +66,32 @@
     <%= f.label :title, class: "label label-text text-base" %>
     <%= f.text_field :title, class:"input input-bordered w-full" %>
   </div> -->
-  <div class="mb-3">
+  <div class="mb-3 md:text-lg">
     <%= f.label :body, class:"label label-text text-base font-medium" %>
-    <%= f.text_area :body, class: "textarea textarea-bordered w-full text-base", rows: "10", 
+    <%= f.text_area :body, class: "textarea textarea-bordered w-full text-base md:text-lg", rows: "10", 
         placeholder:"今日、心が動いたことは？\n今日の出来事や気持ちを、英語または日本語で自由に書いてみましょう" %>
   </div>
 
   <div class="mb-4">
-  <div class="font-medium text-base mb-2">添削トーン</div>
+  <div class="font-medium text-base md:text-lg mb-2">添削トーン</div>
     <div class="flex gap-4">
       <label class="flex-1">
         <%= f.radio_button :"tone", "polite", class: "hidden peer" %>
-        <span class="btn btn-outline btn-primary w-full peer-checked:bg-forest-500 peer-checked:text-white ">
+        <span class="btn btn-outline btn-primary w-full peer-checked:bg-forest-500 peer-checked:text-white md:text-lg">
         丁寧
         </span>
       </label>
 
       <label class="flex-1">
         <%= f.radio_button :"tone", "standard", class: "hidden peer" %>
-        <span class="btn btn-outline btn-primary w-full peer-checked:bg-forest-500 peer-checked:text-white">
+        <span class="btn btn-outline btn-primary w-full peer-checked:bg-forest-500 peer-checked:text-white md:text-lg">
         スタンダード
         </span>
       </label>
 
       <label class="flex-1">
         <%= f.radio_button :"tone", "casual", class:"hidden peer" %>
-        <span class="btn btn-outline btn-primary w-full peer-checked:bg-forest-500 peer-checked:text-white ">
+        <span class="btn btn-outline btn-primary w-full peer-checked:bg-forest-500 peer-checked:text-white md:text-lg">
         カジュアル
         </span>
       </label>
@@ -99,5 +99,5 @@
       <%# f.submit "カジュアル", name:"tone",value: "casual", class:"btn btn-outline btn-primary flex-1" %>
     </div>
   </div>
-  <%= f.submit "添削する", class:"btn btn-primary w-full mt-4" %>
+  <%= f.submit "添削する", class:"btn btn-primary w-full mt-4 text-base md:text-lg" %>
 <% end %>

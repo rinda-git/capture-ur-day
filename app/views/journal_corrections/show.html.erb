@@ -8,7 +8,7 @@
     
     
     <div class="flex justify-between gap-2 mb-1">
-      <div class="font-semibold mb-2"> 
+      <div class="font-semibold mb-2 text-base md:text-lg"> 
         <%= @journal_correction.journal.posted_date.strftime("%Y/%m/%d") %>
       </div>
       <div class="flex gap-2 mb-2"><% if @previous_journal_correction.present? %>
@@ -71,7 +71,7 @@
                 
                 <%# 学んだ表現 %>
                 <div class="bg-forest-50 p-3 mb-1">
-                  <p class="text-lg font-bold text-forest-700">
+                  <p class="text-lg md:text-2xl font-bold text-forest-700">
                     <%= mistake.learning_points["pattern"] %>
                   </p>
                   <p class="text-forest-600">
@@ -80,28 +80,28 @@
                 </div>
 
                 <%# 添削前・添削後の文章 %>
-                <div class="mx-3 text-gray-500 mb-2">今回の添削</div>
+                <div class="mx-3 text-gray-500 mb-2 text-base md:text-lg">今回の添削</div>
                   <div class="mx-3 bg-red-50 rounded-xl px-2 py-2 mb-2">
-                    <p class=" text-red-500">添削前：<%= mistake.original_text %></p>
+                    <p class=" text-red-500 text-base md:text-lg">添削前：<%= mistake.original_text %></p>
                 </div>
                 <div class="mx-3 bg-forest-50 rounded-xl px-2 py-2">
-                  <p class=" text-forest-600 font-semibold">添削後：<%= mistake.corrected_text %></p> 
+                  <p class=" text-forest-600 font-semibold text-base md:text-lg">添削後：<%= mistake.corrected_text %></p> 
                 </div>
                 <hr class="border-forest-500 mb-2 mt-2">
 
               <%# ほかの表現・言い回し %>
-              <p class="mx-3 text-gray-500 mb-2">似た表現・言い回し</p>
+              <p class="mx-3 text-gray-500 mb-2 text-base md:text-lg">似た表現・言い回し</p>
 
               <% Array(mistake.learning_points["related_phrases"]).compact.each do |phrase| %>
                 <div class="mx-3 bg-white border border-gray-300 rounded-2xl p-3 mb-2">
                   <p class="text-lg font-bold"><%= phrase["phrase"] %></p>
-                  <p><%= phrase["meaning"] %></p>
-                  <p class=" text-forest-500 font-semibold"><%= phrase["example"] %></p>
+                  <p class="text-base md:text-lg"><%= phrase["meaning"] %></p>
+                  <p class=" text-forest-500 font-semibold text-base md:text-lg"><%= phrase["example"] %></p>
                 </div> 
               <% end %>
                 <%= link_to "この日記を見る", 
                     @journal_correction.journal,
-                    class:"mx-3 flex items-center justify-center btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white mb-2" %>                     
+                    class:"text-base md:text-lg mx-3 flex items-center justify-center btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white mb-2" %>                     
                 </div>
             <% end %>  
           </div>

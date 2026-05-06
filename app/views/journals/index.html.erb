@@ -24,11 +24,11 @@
 
           <%= link_to journal_path(journal), class:"block border border-cream-300 bg-white rounded-lg px-2 py-1 sm:px-4 py-3" do %>
           
-          <p class="font-bold text-cream-500 mb-3">
+          <p class="font-bold text-cream-500 mb-2">
             <%= journal.posted_date.strftime("%Y/%m/%d") %>
           </p>
 
-          <p class="mb-3 line-clamp-2">
+          <p class="text-base md:text-lg mb-3 line-clamp-2">
             <%= journal.journal_correction&.rewritten_text || journal.body %>
           </p>
           <% end %>
