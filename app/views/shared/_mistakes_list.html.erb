@@ -1,134 +1,63 @@
     <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-4">
       <div class="flex items-center gap-2">
-        <h2 class="font-semibold mb-3">添削後の文章</h2>
+        <h2 class="font-semibold mb-3 text-base md:text-lg">添削後の文章</h2>
         <span class="badge badge-soft badge-success text-white mb-3 p-3">
         添削トーン：<%= t("activerecord.attributes.journal.tones.#{@journal_correction.journal.tone}")  %>
         </span>
       </div>
         <div class="border border-cream-300 bg-white rounded-2xl p-4 mb-2">
-          <p>
+          <p class="text-base md:text-lg">
           <%= @journal_correction.rewritten_text %>
           </p>
         </div>
     </div>
 
     <% if @journal_correction.mistakes.present? %>
-      <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-4">
-        <div class="flex justify-between mb-3">
-          <h2 class="font-semibold">今回の学び(<%= @journal_correction.mistakes.size %>件)</h2>
-           <%= link_to "表現を復習する", @journal_correction, class: "btn btn-sm border-forest-500 text-forest-500 hover:bg-forest-500 hover:text-white" %>
-        </div>
-        <div class="border border-gray-300 bg-white rounded-2xl p-4 mb-2">
-          <ol class="list-decimal list-inside">
-            <% @journal_correction.mistakes.each do |mistake| %>
-              <li class="mb-4">
-                <span class="font-semibold">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-lg md:text-2xl font-semibold">今回の学び(<%= @journal_correction.mistakes.size %>件)</h2>
+          <%= link_to "表現を復習する", @journal_correction, class: "btn btn-sm border-forest-500  bg-forest-50 text-forest-500 hover:bg-forest-500 hover:text-white text-base md:text-lg" %>
+      </div>
+
+          <% @journal_correction.mistakes.each do |mistake| %>
+            <%# 枠開始 %>
+            <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden mb-3">
+              <div class="bg-forest-50 border-b border-forest-200 px-4 py-3"> 
+                <span class="badge badge-primary mb-2 p-3">
                   <%= mistake_type_label(mistake.mistake_type) %>
                 </span>
-                <p class="text-base bg-red-50 px-3 py-2 text-red-500 mb-1 rounded-xl">  
-                【添削前】: <%= mistake.original_text %></p>
-                <p class="text-base bg-sage-50 border-l-2 text-forest-600 font-semibold border-forest-200 rounded-xl px-3 py-2">
-                【添削後】：<%= mistake.corrected_text %></p>
+                <% if mistake.learning_points["pattern"].present? %>
+                  <p class="text-lg md:text-2xl font-semibold mb-1 text-forest-600">
+                    <%= mistake.learning_points["pattern"] %>
+                  </p>
+                <% end %>
+                <% if mistake.learning_points["meaning"].present? %>
+                  <p class="text-base md:text-lg text-forest-600">
+                    <%= mistake.learning_points["meaning"] %> 
+                  </p>
+                <% end %>
+                </div>
+                
+                <%# ボディ %>
+                <div class="px-4 py-3">
+                  <p class="text-gray-600 mb-1 text-base md:text-lg">今回の添削</p>
+                  <p class="mx-2 text-base md:text-lg bg-red-50 px-3 py-2 text-red-500 mb-2 rounded-xl">  
+                  <%= mistake.original_text %></p>
+                  <p class="mx-2 text-base md:text-lg bg-sage-50  text-forest-600 font-semibold border-forest-200 rounded-xl px-3 py-2">
+                  <%= mistake.corrected_text %></p>
 
-                <p class="text-base mt-2">ポイント</p>
-                  <div class=" bg-cream-100 rounded-xl px-3 py-2">
-                    <p> <%= mistake.explanation %></p>
-                  </div>
-                <% if mistake.learning_points.present? %>
-                  <div class="text-base bg-white border border-cream-300 rounded-xl px-3 py-2 mt-2">
-                    <!--<% if mistake.learning_points["review_tag"].present? %>
-                      <p>【復習タグ】<%= mistake.learning_points["review_tag"] %>
-                    <% end %> 
-                    <% if mistake.learning_points["label"].present? %>
-                      (<%= mistake.learning_points["label"] %>)
-                    <% end %></p>-->
-                      <% if mistake.learning_points["meaning"].present? %>
-                        <p>【意味・ニュアンス】<%= mistake.learning_points["meaning"] %></p>
-                      <% end %>
-                    <% if mistake.learning_points["pattern"].present? %>
-                      <p>【覚える型】<%= mistake.learning_points["pattern"] %></p>
-                    <% end %>
-
-                    <!--<% if mistake.learning_points["related_phrases"].present? %>
-                      <div class="mt-2">
-                        <p class="font-semibold">似た表現</p>
-                        <% mistake.learning_points["related_phrases"].each do |phrase| %>
-                          <div class="mt-2 bg-sage-50 border-l-2 border-forest-200 px-3 py-2">
-                            <% if phrase["meaning"].present? %>
-                              <p>【意味】<%= phrase["meaning"] %></p>
-                            <% end %>
-
-                            <% if phrase["phrase"].present? %>
-                              <p>【表現】<%= phrase["phrase"] %></p>
-                            <% end %>
-
-                            <% if phrase["example"].present? %>
-                              <p>【例文】<%= phrase["example"] %></p>
-                            <% end %>
-                          </div>
-                        <% end %>
-                      </div>
-                    <% end %> -->
-
+                <%# ポイント %>
+                <% if mistake.explanation.present? %>
+                  <p class="text-gray-600 mt-2 text-base md:text-lg">ポイント</p>
+                  <div class="mx-2 bg-gray-50 rounded-xl px-3 py-2 text-gray-700">
+                    <%= mistake.explanation %>
                   </div>
                 <% end %>
-              </li>
+                </div>
+              </div>
             <% end %>
-          </ol>
-        </div>
-      </div>
+
     <% else %>
       <div class="alert alert-success mb-4">
         <span>🎉 間違いは見つかりませんでした！</span>
       </div>
     <% end %>
-
-    <%# 外側のカード %>
-    <% if @journal_correction&.mistake_patterns.present? || @journal_correction&.native_phrases.present? %>
-      <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-2">
-        <h3 class="font-semibold text-base mb-2">英語表現のポイント</h3>   
-
-        <%# 内側の白部分 %>
-        <!--<div class="border border-gray-100 bg-white rounded-2xl p-4 mb-2"> -->
-          <div class="mb-2">
-
-          <% if @journal_correction&.mistake_patterns.present? %>
-          
-          <div class="mb-2">
-          <p class="badge badge-error p-3 mb-2">間違いパターン</p>
-            
-            <% (@journal_correction.mistake_patterns || []).each do |pattern| %> 
-              <div class="bg-white rounded-2xl p-3 mb-2">
-                <p class="font-semibold"><%= pattern["point"] %></p>
-                <p class="bg-gray-100 px-3 py-2 text-gray-600">【添削前】<%= pattern["evidence"] %></p>
-                <p>【説明】<%= pattern["explanation"] %></p>
-              </div>
-            <% end %>
-          </div>
-          <% end %>
-          </div>
-          
-          <% if @journal_correction&.native_phrases.present? %>
-          <hr class="border-forest-300 mb-2">
-
-          <div class="mb-2">
-            <p class="badge badge-warning p-3 mb-2">ネイティブがよく使う表現</p>
-            
-            <% @journal_correction.native_phrases&.each do |phrase| %>
-            <div class="bg-white rounded-2xl p-3 mb-2">
-              <p>【意味】<%= phrase["meaning"] %></p>
-              <p>【覚えたい表現】<%= phrase["phrase"] %></p>
-              <p>【使い方（文法）】<%= phrase["grammarpattern"] %>
-              <p>【今回の日記では】<%= phrase["corrected_text"] %></p>
-              <p>【ほかの場面では】</p>
-              <p><%= phrase["example"] %></p>
-              <p><%= phrase["example2"] %></p>
-            </div>
-            <% end %>
-          </div>
-          <% end %>
-      <!--</div> -->
-      </div>
-    <% end %>
-
- <!-- </div>

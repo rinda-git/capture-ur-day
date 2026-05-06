@@ -9,12 +9,12 @@
 <div class="navbar-center hidden md:flex">
   <% if user_signed_in? %>
   <span>
-    <%= link_to "ホーム", authenticated_root_path, class: "btn btn-ghost normal-case text-md" %>
-    <%= link_to "日記を書く", new_journal_path, class: "btn btn-ghost normal-case text-md" %>
-    <%= link_to "ジャーナル一覧", journals_path, class: "btn btn-ghost normal-case text-md" %>
-    <%= link_to "カレンダー", "#", class: "btn btn-ghost normal-case text-md" %>
-    <%= link_to "学び", journal_corrections_path, class: "btn btn-ghost normal-case text-md" %>
-    <%= link_to "マイページ", "#", class: "btn btn-ghost normal-case text-md" %>
+    <%= link_to "ホーム", authenticated_root_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
+    <%= link_to "日記を書く", new_journal_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
+    <%= link_to "ジャーナル一覧", journals_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
+    <%= link_to "カレンダー", "#", class: "btn btn-ghost normal-case text-md md:text-lg" %>
+    <%= link_to "学び", journal_corrections_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
+    <%= link_to "マイページ", "#", class: "btn btn-ghost normal-case text-md md:text-lg" %>
   </span>
   <% else %>
     <%# 未ログイン時は何も表示しない %>
@@ -27,15 +27,15 @@
 <div class="navbar-end gap-2">
   <div class="hidden md:flex gap-2">
       <% if user_signed_in? %>
-        <%= link_to t('.logout'), destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか？" }, class: "btn btn-primary font-bold text-white hover:opacity-70" %>
+        <%= link_to t('.logout'), destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "ログアウトしますか？" }, class: "btn btn-primary font-bold text-white hover:opacity-70 text-base md:text-lg" %>
       <% else %>
         <div class = "flex gap-4">
-        <%= link_to t('.register'), new_user_registration_path, class: "btn btn-primary font-bold text-white px-6 text-sm  sm:text-base min-h-11 h-11 hover:opacity-70" %>
+        <%= link_to t('.register'), new_user_registration_path, class: "btn btn-primary font-bold text-white px-6 text-sm  sm:text-base min-h-11 h-11 hover:opacity-70 text-base md:text-lg" %>
       
         <% if current_page?(new_user_session_path) %>
-          <%= link_to t('.login'), new_user_session_path, class: "btn btn-outline btn-md px-6 text-sm sm:text-base h-11 min-h-11 opacity-60 pointer-events-none" %>
+          <%= link_to t('.login'), new_user_session_path, class: "btn btn-outline btn-md px-6 text-sm sm:text-base h-11 min-h-11 opacity-60 pointer-events-none text-base md:text-lg" %>
         <% else %>
-          <%= link_to t('.login'), new_user_session_path, class: "btn btn-outline btn-md px-6 text-sm sm:text-base h-11 min-h-11 hover:opacity-70" %>
+          <%= link_to t('.login'), new_user_session_path, class: "btn btn-outline btn-md px-6 text-sm sm:text-base h-11 min-h-11 hover:opacity-70 text-base md:text-lg" %>
         <% end %>
       <% end %>
         </div>
