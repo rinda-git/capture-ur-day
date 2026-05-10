@@ -24,3 +24,7 @@ ja:
         good: 良い
         neutral: 普通
         bad: 悪い
+      tone:
+        polite: 丁寧
+        standard: スタンダード
+        casual: カジュアル

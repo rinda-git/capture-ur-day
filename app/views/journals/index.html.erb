@@ -13,34 +13,50 @@
         <%# 日記一覧をループ %>
         <% @journals.each do |journal| %>
           <%#　1件ずつ枠で囲む  %>
-          <div class="text-right">
+          <!--<div class="text-right">
             <%= button_to "削除",
                 journal_path(journal),
                 method: :delete,
                 form: {data: {turbo_confirm:"このジャーナルを削除しますか？"}},
-                class: "text-sm text-center hover:opacity-70"
+                class: "btn btn-sm text-sm text-center hover:opacity-70"
             %>
+          </div>-->
+
+          <div class="border border-cream-300 bg-white rounded-lg py-3 mb-2 px-4">
+
+            <div class="flex items-center gap-3">
+              <span class="font-bold text-cream-500 mb-2">
+                <%= journal.posted_date.strftime("%Y/%m/%d") %>
+              </span>
+              <span class="inline-flex items-center bg-forest-50 text-forest-500 text-sm md:text-md rounded-full px-2 py-1">
+                添削トーン：<%= t("enums.journal.tone.#{journal.tone}") %>
+              </span>
+              <span class="ml-auto">
+              <%= button_to "削除",
+                  journal_path(journal),
+                  method: :delete,
+                  form: {data: {turbo_confirm:"このジャーナルを削除しますか？"}},
+                  class: "btn btn-sm text-sm text-center bg-gray-200 hover:opacity-70"
+              %>
+            </span>
+            </div>
+            <%# 本文 %>
+            <%= link_to journal_path(journal) do %>
+            <p class="text-base md:text-lg mb-3 line-clamp-2">
+              <%= journal.journal_correction&.rewritten_text || journal.body %>
+            </p>
+            <% end %>
           </div>
 
-          <%= link_to journal_path(journal), class:"block border border-cream-300 bg-white rounded-lg px-2 py-1 sm:px-4 py-3" do %>
-          
-          <p class="font-bold text-cream-500 mb-2">
-            <%= journal.posted_date.strftime("%Y/%m/%d") %>
-          </p>
-
-          <p class="text-base md:text-lg mb-3 line-clamp-2">
-            <%= journal.journal_correction&.rewritten_text || journal.body %>
-          </p>
-          <% end %>
         <% end %>
+
       <% else %>
       <div role="alert" class="alert alert-info">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-6 w-6 shrink-0 stroke-current">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
-        <span>まだジャーナリングがありません。最初のジャーナルを書いてみましょう！</span>
+        <span>最初の1ページです🌱今日の気持ちを書いてみましょう</span>
       </div>
       <% end %>
     </div>
   </div>
-</div>

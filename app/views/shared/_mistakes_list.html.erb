@@ -1,15 +1,13 @@
-    <div class="border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-4">
-      <div class="flex items-center gap-2">
-        <h2 class="font-semibold mb-3 text-base md:text-lg">添削後の文章</h2>
-        <span class="badge badge-soft badge-success text-white mb-3 p-3">
-        添削トーン：<%= t("activerecord.attributes.journal.tones.#{@journal_correction.journal.tone}")  %>
+    <div class="border border-gray-200 bg-white rounded-2xl mb-4">
+      <div class="flex items-center gap-2 bg-forest-50 border-b border-forest-200 px-4 ">
+        <h2 class="font-semibold text-base md:text-lg py-2 text-forest-600">添削後の文章</h2>
+        <span class="badge badge-soft badge-success text-white  p-3">
+        添削トーン：<%= t("enums.journal.tone.#{journal.tone}") %>
         </span>
       </div>
-        <div class="border border-cream-300 bg-white rounded-2xl p-4 mb-2">
-          <p class="text-base md:text-lg">
+          <p class="text-base md:text-lg p-4">
           <%= @journal_correction.rewritten_text %>
           </p>
-        </div>
     </div>
 
     <% if @journal_correction.mistakes.present? %>
