@@ -13,10 +13,12 @@
           <%= link_to journal_correction_path(journal_correction),
             class:"block border border-cream-300 bg-white rounded-lg px-2 py-1 sm:px-4 py-3" do %>
           <%# 日付 %>
-            <div class="font-bold text-cream-500 flex items-center gap-2">
-              <%= journal_correction.journal.posted_date.strftime("%Y/%m/%d") %>の日記
+            <div class="font-bold text-cream-500 flex items-center gap-3 mb-2">
+              <span>
+                <%= journal_correction.journal.posted_date.strftime("%Y/%m/%d") %>の日記
+              </span>
               <div class="badge badge-soft badge-success badge-md text-white">
-                <%= journal_correction.mistakes.count { |mistake| mistake.learning_points["pattern"].present? } %>つの学び
+                  <%= journal_correction.mistakes.count { |mistake| mistake.learning_points["pattern"].present? } %>つの学び
               </div>
            </div>
       
@@ -42,8 +44,8 @@
       <div role="alert" class="alert alert-info alert-soft">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-6 w-6 shrink-0 stroke-current">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span>まだジャーナリングがありません。最初のジャーナリングを書いてみましょう！</span>
+        </svg>最初の1ページです🌱今日の気持ちを書いてみましょう
+        <span></span>
       </div>
     <% end %>
   </div>

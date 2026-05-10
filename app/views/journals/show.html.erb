@@ -18,26 +18,29 @@
   </div>
   <%# 元の文章（日本語でもそのまま表示） %>
   <%# スマホ：折りたたみ表示 %>
-    <div class="font-semibold mb-2 text-base md:text-lg"><%= @journal.posted_date.strftime("%Y/%m/%d") %></div>
-    <div class="md:hidden collapse collapse-arrow border border-cream-300 bg-forest-100 rounded-2xl mb-4">
-      <input type="checkbox" />
-      <h2 class="collapse-title font-semibold pr-10">元の文章を表示</h2>
-      <div class="collapse-content">
-        <div class="border border-cream-300 bg-white rounded-2xl p-4">
-          <p>
-            <%= @journal_correction&.original_text %>
-          </p>
-        </div>
-      </div>
+    <div class="font-semibold mb-2 text-base md:text-lg">
+      <%= @journal.posted_date.strftime("%Y/%m/%d") %>
     </div>
+      <div class="md:hidden collapse collapse-arrow border border-gray-200 bg-white rounded-2xl overflow-hidden mb-4">
+        <input type="checkbox" />
+          <h2 class="collapse-title font-semibold pr-10 bg-red-50 text-red-500">元の文章を表示</h2>
+
+          <div class="collapse-content">
+            <p class="px-2 py-2">
+              <%= @journal_correction&.original_text %>
+            </p>
+          </div>
+      </div>
+
   <%# md以上：通常表示 %>
-      <div class="hidden md:block border border-cream-300 bg-forest-100 rounded-2xl p-4 mb-4">
-      <h2 class="font-semibold mb-2 text-base md:text-lg">元の文章 </h2>
-        <div class="border border-cream-300 bg-white rounded-2xl p-4 mb-2">
-        <p class="text-base md:text-lg">
+       <%# 枠開始 %>
+      <div class="hidden md:block border border-gray-200 bg-white rounded-2xl overflow-hidden mb-4">
+        <div class="bg-red-50 border-b border-red-100 px-4">
+          <h2 class="font-semibold text-base md:text-lg text-red-500 py-2">元の文章 </h2>
+        </div>  
+        <p class="text-base md:text-lg px-4 py-3">
           <%= @journal_correction&.original_text %>
         </p>
-        </div>
     </div>
   
     <% if @journal_correction.present? %>
