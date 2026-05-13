@@ -11,9 +11,10 @@ ja:
   #   label:
   #     email: メールアドレス
   #     password: パスワード
-  # user_sessions:
-  #   new:
-  #     title: ログイン
+
+  # home:
+  #   index:
+  #     title: ホーム
   registrations:
     new:
         # title: 新規登録
@@ -24,11 +25,15 @@ ja:
       title: ジャーナリング作成
     show:
       title: ジャーナル添削結果
+    index:
+      title: ジャーナリング一覧
+    calendar:
+      title: カレンダー
   journal_corrections:
     index:
-      title: 学び一覧
+      title: 表現一覧
     show:
-      title: 学び詳細
+      title: 表現詳細
   shared:
     header:
       login: ログイン

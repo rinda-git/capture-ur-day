@@ -16,7 +16,12 @@ Rails.application.routes.draw do
 
   # root "top#index"
   # root to "home#index"
-  resources :journals, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
+  resources :journals, only: [ :index, :show, :new, :create, :edit, :update, :destroy ] do
+    collection do
+      get "calendar"
+    end
+  end
+
   resources :mistakes, only: [ :index, :show, :new, :create, :destroy ]
   resource :user, only: [ :show, :edit, :update, :destroy ]
   resources :journal_corrections, only: [ :index, :show ]

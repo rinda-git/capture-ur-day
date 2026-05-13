@@ -3,7 +3,11 @@ class JournalsController < ApplicationController
   before_action :authenticate_user!
   def index
     # @journals =current_user.journals.order(created_at: :desc)
-    @journals =current_user.journals.includes(:journal_correction).order(posted_date: :desc, id: :desc)
+    @journals =current_user.journals.includes(:journal_correction)
+      if params[:posted_date].present?
+        @journals = @journals.where(posted_date: params[:posted_date])
+      end
+    @journals = @journals.order(posted_date: :desc, id: :desc)
   end
 
   def show
@@ -129,6 +133,28 @@ class JournalsController < ApplicationController
     @journal = current_user.journals.find(params[:id])
     @journal.destroy
     redirect_to journals_path, success: "ジャーナルが削除されました。", status: :see_other
+  end
+
+  def calendar
+    @year = params[:year]&.to_i || Date.current.year
+    @month = params[:month]&.to_i || Date.current.month
+    first_of_month = Date.new(@year, @month, 1)
+    last_of_month = first_of_month.end_of_month
+
+    @calendar_start = first_of_month.beginning_of_week(:monday)
+    @calendar_end = last_of_month.end_of_week(:monday)
+
+    prev = first_of_month.prev_month
+    nxt = first_of_month.next_month
+    @prev_year, @prev_month = prev.year, prev.month
+    @next_year, @next_month = nxt.year, nxt.month
+
+    @journals_by_date = current_user
+                        .journals
+                        .where(posted_date: @calendar_start..@calendar_end)
+                        .order(posted_date: :desc, id: :desc)
+                        .group_by(&:posted_date)
+    @today = Date.current
   end
 
   private
