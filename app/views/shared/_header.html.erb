@@ -12,8 +12,8 @@
     <%= link_to "ホーム", authenticated_root_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
     <%= link_to "日記を書く", new_journal_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
     <%= link_to "ジャーナル一覧", journals_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
-    <%= link_to "カレンダー", "#", class: "btn btn-ghost normal-case text-md md:text-lg" %>
-    <%= link_to "学び", journal_corrections_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
+    <%= link_to "カレンダー", calendar_journals_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
+    <%= link_to "表現一覧", journal_corrections_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
     <%= link_to "マイページ", "#", class: "btn btn-ghost normal-case text-md md:text-lg" %>
   </span>
   <% else %>
@@ -53,8 +53,8 @@
         <li><%= link_to "ホーム", authenticated_root_path %></li>
         <li><%= link_to "日記を書く", new_journal_path %></li>
         <li><%= link_to "ジャーナル一覧", journals_path %></li>
-        <li><%= link_to "カレンダー", "#" %></li>
-        <li><%= link_to "学び", journal_corrections_path %></li>
+        <li><%= link_to "カレンダー", calendar_journals_path %></li>
+        <li><%= link_to "表現一覧", journal_corrections_path %></li>
         <li><%= link_to "マイページ", "#" %></li>
         <li>
           <%= link_to t('.logout'), destroy_user_session_path,

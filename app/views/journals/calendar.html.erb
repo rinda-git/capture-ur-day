@@ -1,0 +1,68 @@
+<%= content_for(:title, t('.title', default: APP_NAME)) %>
+<div class="flex-grow px-2 sm:px-6 md:px-10">
+  <div class="max-w-5xl mx-auto w-full pt-2 pb-6 sm:pt-6 md:px-2">
+    <div class="w-full bg-white/80 p-4 sm:p-6 rounded-3xl">
+    
+    <div class="flex items-center justify-between flex-wrap">
+      <h1 class="text-lg sm:text-cl md:text-2xl font-semibold text-forest-500">
+        ジャーナルカレンダー
+        <span class="text-forest-500 text-sm sm:text-base md:text-2xl">(<%= @year %>年 <%= @month %>月)</span>
+      </h1>
+      <div class="flex items-center gap-2 flex-wrap text-xs sm:text-sm">
+        <%= link_to "前月", calendar_journals_path(year: @prev_year, month: @prev_month), class:"px-4 py-2 rounded-xl border border-forest-200 bg-forest-100 text-forest-500 font-semibold hover:bg-forest-200" %>
+        <%= link_to "今月", calendar_journals_path(year: @today.year, month: @today.month), class:"px-4 py-2 rounded-xl border border-forest-500 bg-forest-500 text-white font-semibold hover:bg-forest-600" %>
+        <%= link_to "翌月", calendar_journals_path(year:@next_year, month:@next_month), class:"px-4 py-2 rounded-xl border border-forest-200 bg-forest-100 text-forest-500 font-semibold hover:bg-forest-200" %>
+      </div>
+    </div>
+
+    <!-- 曜日 -->
+    <div class="mt-4 grid grid-cols-7 gap-2 text-center text-sm sm:text-base md:text-lg">
+      <% [ "月", "火", "水", "木", "金", "土", "日"].each do |day| %>
+        <div class="px-2 py-1 text-center font-medium text-forest-500">
+          <%= day %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- カレンダー本体 -->
+    <div class="mt-1 grid grid-cols-7 gap-2 ">
+      <% day = @calendar_start %>
+      <% while day <= @calendar_end %>
+        <% journals = @journals_by_date[day] || [] %>
+
+        <!-- 日記が1件の場合 -->
+        <% if journals.size == 1 %>
+          <%= link_to journal_path(journals.first), 
+              class:"group block min-h-28 rounded  bg-forest-500/80 px-3 py-3 rounded text-left hover:bg-gray-200" do %>
+          <div class="font-semibold text-white group-hover:text-forest-400" >
+          <%= day.day %>
+          <span class="text-xs sm:text-sm md:text-md">(<%= journals.size %>件)</span>
+          </div>
+          <% end %>
+
+        <!-- 日記が2件以上の場合-->
+        <% elsif journals.size > 1 %>
+          <%= link_to journals_path(posted_date: day), 
+              class:"group block min-h-28 rounded  bg-forest-500/80 px-3 py-3  text-left hover:bg-gray-200" do %>
+            <div class="font-semibold text-white group-hover:text-forest-400">
+            <%= day.day %>
+            <span class="text-xs sm:text-sm md:text-md">(<%= journals.size %>件)</span>
+            </div>
+          <% end %>
+        <% else %>
+
+          <!-- 日記がない日 -->
+          <%= link_to new_journal_path(posted_date: day), 
+              class:"group block min-h-28 rounded  bg-gray-100 px-3 py-3  text-left text-forest-400 hover:bg-gray-200" do %>
+            <div class="font-semibold group-hover:text-forest-400">
+            <%= day.day %>
+            </div>
+          <% end %>
+        <% end %>
+
+        <% day += 1.day %>
+      <% end %>
+    </div>
+    </div>
+  </div>
+</div>

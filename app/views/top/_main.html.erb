@@ -1,5 +1,5 @@
 <section class="relative overflow-hidden bg-sage-50 min-h-screen
-flex items-center justify-center py-16 px-10">
+flex items-center justify-center py-16 px-5 md:px-10">
    <%# ── 背景アイコン：星と本を薄く散らす ── %>
   <svg class="absolute inset-0 w-full h-full pointer-events-none"
        viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg"
@@ -43,30 +43,30 @@ flex items-center justify-center py-16 px-10">
   </svg>
 
   <%# ── メインコンテンツ ── %>
-  <div class="relative z-10 text-center max-w-2xl">
+  <div class="relative z-10 text-center max-w-4xl">
     <!-- <h1 class="font-title text-5xl mb-4">Capture Your Day</h1> -->
-    <span class="inline-block text-lg font-medium tracking-widest
+    <span class="inline-block text-lg md:text-2xl font-medium tracking-widest
                  text-forest-600 bg-white/80 px-4 py-1 rounded-full mb-6">
       AI English Journal
     </span>
     <%# メインキャッチコピー %>
-    <h1 class="font-sans text-3xl md:text-5xl font-normal text-forest-800 leading-snug mb-4">
+    <h1 class="font-sans text-3xl md:text-6xl font-normal text-forest-800 leading-snug mb-4">
       英語で、<br>
       自分の気持ちを表現しよう。
     </h1>
 
     <%# サブコピー %>
-    <p class="text-base text-forest-400 leading-relaxed mb-9">
+    <p class="text-base md:text-2xl text-forest-400 leading-relaxed mb-9">
       完璧な英文より、続ける一文を。<br>
       毎日の小さな一文が自信につながる。<br>
     </p>
     <%# CTAボタン群 %>
     <div class="flex gap-3 justify-center items-center flex-wrap">
       <%= link_to "日記を書く →", new_user_registration_path,
-          class: "btn btn-lg bg-forest-500 text-white border-none hover:bg-forest-600 px-8" %>
+          class: "btn btn-md md:btn-lg  md:text-lg bg-forest-500 text-white border-none hover:bg-forest-600 px-8" %>
 
       <%= link_to "ログインはこちら", new_user_session_path,
-          class: "btn btn-lg bg-white text-center text-forest-600 border-none hover:bg-cream-50" %>
+          class: "btn btn-md md:btn-lg md:text-lg bg-white text-center text-forest-600 border-none hover:bg-cream-50" %>
     </div>
   </div>
 </section>
