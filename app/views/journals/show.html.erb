@@ -26,9 +26,7 @@
           <h2 class="collapse-title font-semibold pr-10 bg-red-50 text-red-500">元の文章を表示</h2>
 
           <div class="collapse-content">
-            <p class="px-2 py-2">
-              <%= @journal_correction&.original_text %>
-            </p>
+            <p class="px-2 py-2 whitespce-pre-line"><%= @journal_correction&.original_text %></p>
           </div>
       </div>
 
@@ -38,9 +36,7 @@
         <div class="bg-red-50 border-b border-red-100 px-4">
           <h2 class="font-semibold text-base md:text-lg text-red-500 py-2">元の文章 </h2>
         </div>  
-        <p class="text-base md:text-lg px-4 py-3">
-          <%= @journal_correction&.original_text %>
-        </p>
+        <p class="text-base md:text-lg px-5 py-4 whitespace-pre-line"><%= @journal_correction&.original_text %></p>
     </div>
   
     <% if @journal_correction.present? %>

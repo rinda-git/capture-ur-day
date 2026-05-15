@@ -9,11 +9,11 @@
 <div class="navbar-center hidden md:flex">
   <% if user_signed_in? %>
   <span>
-    <%= link_to "ホーム", authenticated_root_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
-    <%= link_to "日記を書く", new_journal_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
-    <%= link_to "ジャーナル一覧", journals_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
-    <%= link_to "カレンダー", calendar_journals_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
-    <%= link_to "表現一覧", journal_corrections_path, class: "btn btn-ghost normal-case text-md md:text-lg" %>
+    <%= link_to "ホーム", authenticated_root_path, class: "btn btn-ghost normal-case text-sm md:text-lg" %>
+    <%= link_to "日記を書く", new_journal_path, class: "btn btn-ghost normal-case text-sm md:text-lg" %>
+    <%= link_to "ジャーナル一覧", journals_path, class: "btn btn-ghost normal-case text-sm md:text-lg" %>
+    <%= link_to "カレンダー", calendar_journals_path, class: "btn btn-ghost normal-case text-sm md:text-lg" %>
+    <%= link_to "表現一覧", journal_corrections_path, class: "btn btn-ghost normal-case text-sm md:text-lg" %>
     <%= link_to "マイページ", "#", class: "btn btn-ghost normal-case text-md md:text-lg" %>
   </span>
   <% else %>

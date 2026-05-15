@@ -1,4 +1,4 @@
-<%= form_with model: journal do |f| %>
+<%= form_with model: journal, data: { controller: "loading", action: "submit->loading#show" } do |f| %>
   <%# render 'shared/error_messages', object: f.object %>
   <div class="mb-3">
     <p class="text-sans text-base md:text-lg font-medium mb-2">今日の気分</p>
@@ -99,5 +99,18 @@
       <%# f.submit "カジュアル", name:"tone",value: "casual", class:"btn btn-outline btn-primary flex-1" %>
     </div>
   </div>
-  <%= f.submit "添削する", class:"btn btn-primary w-full mt-4 text-base md:text-lg" %>
+  <%= f.submit "添削する",
+      class:"btn btn-primary w-full mt-4 text-base md:text-lg",
+      data: { loading_target: "submit" } %>
+  <div id="ai-loading"  class="ai-loading" aria-hidden="true" >
+    <div class="ai-loading-content">
+      <p class="ai-loading-text">AI添削中</p>
+
+    <div class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+    </div>
+  </div>
 <% end %>
