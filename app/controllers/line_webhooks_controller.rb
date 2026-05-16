@@ -1,5 +1,5 @@
 class LineWebhooksController < ApplicationController
-  skip_before_action :verify_authemticity_token
+  skip_before_action :verify_authenticity_token
 
   def create
     head :ok
