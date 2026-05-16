@@ -1,8 +1,8 @@
 require "test_helper"
 
 class LineWebhooksControllerTest < ActionDispatch::IntegrationTest
-  test "should get create" do
-    get line_webhooks_create_url
+  test "should receive webhook" do
+    post line_webhook_url
     assert_response :success
   end
 end
