@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "line_webhooks/create"
   get "home/index"
   devise_for :users
   # これで以下のようなルーティングが自動生成される
@@ -35,6 +36,9 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/*
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+
+  # LINE Messaging API
+  post "line/webhook", to: "line_webhooks#create"
 
   # Defines the root path route ("/")
   # root "posts#index"
