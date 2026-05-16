@@ -53,7 +53,7 @@ class JournalPromptBuilder
     - Do not return it as one long paragraph.
     - Preserve the user's original paragraph breaks when possible.
     - If the corrected text has multiple logical sentences or paragraphs, include newline characters (\n) between them.
-    
+
     TONE:
     #{tone}
     #{tone_description}
