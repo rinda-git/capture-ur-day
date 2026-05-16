@@ -49,6 +49,10 @@ class JournalPromptBuilder
     - adding slang or trendy expressions (e.g., "no-no", "like, what?")
     - making the writing more dramatic than the original
 
+    For rewritten_text:
+    - Do not return it as one long paragraph.
+    - Preserve the user's original paragraph breaks when possible.
+    - If the corrected text has multiple logical sentences or paragraphs, include newline characters (\n) between them.
 
     TONE:
     #{tone}
